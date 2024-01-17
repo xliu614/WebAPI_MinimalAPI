@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI_MinimalAPI.Models;
+using WebAPI_MinimalAPI.Models.Repositories;
 
 namespace WebAPI_MinimalAPI.Controllers
 {
@@ -8,14 +9,6 @@ namespace WebAPI_MinimalAPI.Controllers
     [Route("api/[controller]")]
     public class ShirtsController : ControllerBase
     {
-        private readonly List<Shirt> shirts = new List<Shirt>()
-        {
-           new Shirt {ShirtId=1, Brand = "V Brand", Color ="Yellow", Gender="women", Price = 30, Size=6 },
-           new Shirt {ShirtId=2, Brand = "V Brand", Color ="Blue", Gender="women", Price = 30, Size=7 },
-           new Shirt {ShirtId=3, Brand = "W Brand", Color ="Purple", Gender="women", Price = 30, Size=7 },
-           new Shirt {ShirtId=4, Brand = "W Brand", Color ="Black", Gender="men", Price = 30, Size=10 },
-           new Shirt {ShirtId=5, Brand = "Y Brand", Color ="White", Gender="women", Price = 10, Size = 6 }
-        };
 
         [HttpGet]
         public IActionResult GetShirts() {
@@ -29,7 +22,7 @@ namespace WebAPI_MinimalAPI.Controllers
             if (id <= 0)
                 return BadRequest($"The input shirId {id} should be larger than 0.");
 
-            var shirt = shirts.FirstOrDefault(s => s.ShirtId.Equals(id));
+            var shirt = ShirtRepository.GetShirtByid(id);
             if (shirt == null)
                 return NotFound();
 
