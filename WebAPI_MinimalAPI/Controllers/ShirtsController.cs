@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI_MinimalAPI.Filters;
 using WebAPI_MinimalAPI.Models;
 using WebAPI_MinimalAPI.Models.Repositories;
 
@@ -17,16 +18,17 @@ namespace WebAPI_MinimalAPI.Controllers
         //mapping from rount to input props
         //[HttpGet("{id}/{color}")]
         //the following is to use querystring to input color, also it can be input from Header
-        [HttpGet("{id}")]       
+        [HttpGet("{id}")]
+        [Shirt_ValidateShirtIdFilter]
         public ActionResult<Shirt> GetShirtById(int id, [FromQuery(Name = nameof(color))] string? color) {
-            if (id <= 0)
-                return BadRequest($"The input shirId {id} should be larger than 0.");
+            //if (id <= 0)
+            //    return BadRequest($"The input shirId {id} should be larger than 0.");
 
-            var shirt = ShirtRepository.GetShirtByid(id);
-            if (shirt == null)
-                return NotFound();
+            //var shirt = ShirtRepository.GetShirtByid(id);
+            //if (shirt == null)
+            //    return NotFound();
 
-            return Ok(shirt);
+            return Ok(ShirtRepository.GetShirtByid(id));
         }
         /// <summary>
         /// FromBody raw/FromForm with key value pair, here Shirt is used as model binding
