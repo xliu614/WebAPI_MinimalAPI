@@ -9,8 +9,7 @@ namespace WebAPI_MinimalAPI.Filters
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            base.OnActionExecuting(context);
-
+            
             var shirtId = context.ActionArguments["id"] as int?;
 
             if (shirtId.HasValue) {
