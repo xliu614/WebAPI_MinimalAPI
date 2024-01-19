@@ -13,7 +13,7 @@ namespace WebAPI_MinimalAPI.Controllers
 
         [HttpGet]
         public IActionResult GetShirts() {
-            return Ok("Reading all the shirts");
+            return Ok(ShirtRepository.GetShirts());
         }
         //mapping from rount to input props
         //[HttpGet("{id}/{color}")]
@@ -21,13 +21,6 @@ namespace WebAPI_MinimalAPI.Controllers
         [HttpGet("{id}")]
         [Shirt_ValidateShirtIdFilter]
         public ActionResult<Shirt> GetShirtById(int id, [FromQuery(Name = nameof(color))] string? color) {
-            //if (id <= 0)
-            //    return BadRequest($"The input shirId {id} should be larger than 0.");
-
-            //var shirt = ShirtRepository.GetShirtByid(id);
-            //if (shirt == null)
-            //    return NotFound();
-
             return Ok(ShirtRepository.GetShirtByid(id));
         }
         /// <summary>
@@ -35,9 +28,12 @@ namespace WebAPI_MinimalAPI.Controllers
         /// </summary>
         /// <param name="shirt"></param>
         /// <returns></returns>
-        [HttpPost]       
-        public IActionResult CreateShirt([FromForm] Shirt shirt) {
-            return Ok($"Created a shirt");
+        [HttpPost]
+        [Shirt_ValidateCreateShirtPropsFilter]
+        public IActionResult CreateShirt([FromBody] Shirt shirt) {
+            
+            ShirtRepository.AddShirt(shirt);
+            return CreatedAtAction(nameof(GetShirtById),new { id = shirt.ShirtId }, shirt);
         }
 
         [HttpPut("{id}")]
