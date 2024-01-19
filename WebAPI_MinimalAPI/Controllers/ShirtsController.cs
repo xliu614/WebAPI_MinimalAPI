@@ -37,8 +37,21 @@ namespace WebAPI_MinimalAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateShirt(int id) {
-            return Ok($"Updated the shirt with ID: {id}");
+        [Shirt_ValidateShirtIdFilter]
+        [Shirt_ValidateUpdateShirtFilter]
+        public IActionResult UpdateShirt(int id, [FromBody] Shirt shirt) {
+            //using try catch block here, because there's possibility that when shirt's updated, it's already been removed
+            try
+            {
+                ShirtRepository.UpdateShirt(shirt);
+            }
+            catch {
+                if (!ShirtRepository.ShirtExists(id))
+                    return NotFound();
+                throw;
+            }
+
+            return NoContent();
         }
         [HttpDelete("{id}")]
         public IActionResult DeleteShirt(int id) {

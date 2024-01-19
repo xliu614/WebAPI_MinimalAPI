@@ -26,7 +26,7 @@ namespace WebAPI_MinimalAPI.Models.Repositories
         }
 
         public static Shirt? GetShirtByProps(string? brand, string? gender, string? color, int? size) {
-            return shirts.FirstOrDefault(x => !string.IsNullOrWhiteSpace(brand) &&
+            return shirts.FirstOrDefault(x =>  !string.IsNullOrWhiteSpace(brand) &&
                                                !string.IsNullOrWhiteSpace(x.Brand) &&
                                                x.Brand.Equals(brand, StringComparison.OrdinalIgnoreCase) &&
                                                !string.IsNullOrWhiteSpace(gender) &&
@@ -45,6 +45,15 @@ namespace WebAPI_MinimalAPI.Models.Repositories
             shirt.ShirtId = newId;
 
             shirts.Add(shirt);
+        }
+
+        public static void UpdateShirt(Shirt shirt) {
+            var shirtForUpdate = shirts.First(s => s.ShirtId == shirt.ShirtId);
+            shirtForUpdate.Brand = shirt.Brand;
+            shirtForUpdate.Price = shirt.Price;
+            shirtForUpdate.Size = shirt.Size;
+            shirtForUpdate.Color = shirt.Color;
+            shirtForUpdate.Gender = shirt.Gender;
         }
     }
 }
