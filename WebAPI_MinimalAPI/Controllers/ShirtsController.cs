@@ -48,8 +48,12 @@ namespace WebAPI_MinimalAPI.Controllers
             return NoContent();
         }
         [HttpDelete("{id}")]
+        [Shirt_ValidateShirtIdFilter]
         public IActionResult DeleteShirt(int id) {
-            return Ok($"Deleted the shirt with ID: {id}");
+
+            var shirt = ShirtRepository.GetShirtByid(id);
+            ShirtRepository.RemoveShirt(id);
+            return Ok(shirt);
         }
     }
 }

@@ -55,5 +55,12 @@ namespace WebAPI_MinimalAPI.Models.Repositories
             shirtForUpdate.Color = shirt.Color;
             shirtForUpdate.Gender = shirt.Gender;
         }
+
+        public static void RemoveShirt(int shirtId) {
+            var shirt = GetShirtByid(shirtId);
+            if (shirt != null) {
+                shirts.Remove(shirt);
+            }
+        }
     }
 }
