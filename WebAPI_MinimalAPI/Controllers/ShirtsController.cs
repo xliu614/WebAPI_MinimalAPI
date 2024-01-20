@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI_MinimalAPI.Filters.ActionFilters;
+using WebAPI_MinimalAPI.Filters.ExceptionFilters;
 using WebAPI_MinimalAPI.Models;
 using WebAPI_MinimalAPI.Models.Repositories;
 
@@ -39,17 +40,10 @@ namespace WebAPI_MinimalAPI.Controllers
         [HttpPut("{id}")]
         [Shirt_ValidateShirtIdFilter]
         [Shirt_ValidateUpdateShirtFilter]
+        [Shirt_UpdateExceptionFilter]
         public IActionResult UpdateShirt(int id, [FromBody] Shirt shirt) {
             //using try catch block here, because there's possibility that when shirt's updated, it's already been removed
-            try
-            {
-                ShirtRepository.UpdateShirt(shirt);
-            }
-            catch {
-                if (!ShirtRepository.ShirtExists(id))
-                    return NotFound();
-                throw;
-            }
+            ShirtRepository.UpdateShirt(shirt);            
 
             return NoContent();
         }
