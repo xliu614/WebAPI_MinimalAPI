@@ -3,16 +3,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using WebAPI_MinimalAPI.Models.Repositories;
 
-namespace WebAPI_MinimalAPI.Filters
+namespace WebAPI_MinimalAPI.Filters.ActionFilters
 {
-    public class Shirt_ValidateShirtIdFilterAttribute: ActionFilterAttribute
+    public class Shirt_ValidateShirtIdFilterAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            
+
             var shirtId = context.ActionArguments["id"] as int?;
 
-            if (shirtId.HasValue) {
+            if (shirtId.HasValue)
+            {
                 if (shirtId.Value <= 0)
                 {
                     context.ModelState.AddModelError("ShirtId", "ShirtId is invalid");
@@ -23,7 +24,8 @@ namespace WebAPI_MinimalAPI.Filters
                     };
                     context.Result = new BadRequestObjectResult(problemDetail);
                 }
-                else if (!ShirtRepository.ShirtExists(shirtId.Value)) {
+                else if (!ShirtRepository.ShirtExists(shirtId.Value))
+                {
                     context.ModelState.AddModelError("ShirtId", "ShirtId does not exist");
 
                     var problemDetail = new ValidationProblemDetails(context.ModelState)

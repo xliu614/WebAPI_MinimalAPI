@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WebAPI_MinimalAPI.Filters;
+using WebAPI_MinimalAPI.Filters.ActionFilters;
 using WebAPI_MinimalAPI.Models;
 using WebAPI_MinimalAPI.Models.Repositories;
 

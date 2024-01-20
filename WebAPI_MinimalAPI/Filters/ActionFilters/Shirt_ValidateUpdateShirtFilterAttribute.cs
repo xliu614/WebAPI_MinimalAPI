@@ -4,16 +4,17 @@ using WebAPI_MinimalAPI.Models;
 
 
 
-namespace WebAPI_MinimalAPI.Filters
+namespace WebAPI_MinimalAPI.Filters.ActionFilters
 {
-    public class Shirt_ValidateUpdateShirtFilterAttribute:ActionFilterAttribute
+    public class Shirt_ValidateUpdateShirtFilterAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             var id = context.ActionArguments["id"] as int?;
             var shirt = context.ActionArguments["shirt"] as Shirt;
 
-            if (id.HasValue && id != shirt.ShirtId) {
+            if (id.HasValue && id != shirt.ShirtId)
+            {
                 context.ModelState.AddModelError("ShirtId", "ShirtId is not the same as id");
                 var problemDetail = new ValidationProblemDetails(context.ModelState)
                 {
