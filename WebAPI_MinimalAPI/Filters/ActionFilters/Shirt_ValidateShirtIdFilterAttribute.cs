@@ -7,6 +7,13 @@ namespace WebAPI_MinimalAPI.Filters.ActionFilters
 {
     public class Shirt_ValidateShirtIdFilterAttribute : ActionFilterAttribute
     {
+        private readonly IShirtRepository _shirtRepository;
+
+        public Shirt_ValidateShirtIdFilterAttribute(IShirtRepository shirtRepository)
+        {
+            this._shirtRepository = shirtRepository;
+
+        }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
 
@@ -24,16 +31,24 @@ namespace WebAPI_MinimalAPI.Filters.ActionFilters
                     };
                     context.Result = new BadRequestObjectResult(problemDetail);
                 }
-                else if (!ShirtRepository.ShirtExists(shirtId.Value))
+                else
                 {
-                    context.ModelState.AddModelError("ShirtId", "ShirtId does not exist");
-
-                    var problemDetail = new ValidationProblemDetails(context.ModelState)
+                    var shirt = _shirtRepository.GetShirtByid(shirtId.Value);
+                    if (shirt == null)
                     {
-                        Status = StatusCodes.Status404NotFound,
-                    };
-                    context.Result = new NotFoundObjectResult(problemDetail);
-                }
+                        context.ModelState.AddModelError("ShirtId", "ShirtId does not exist");
+
+                        var problemDetail = new ValidationProblemDetails(context.ModelState)
+                        {
+                            Status = StatusCodes.Status404NotFound,
+                        };
+                        context.Result = new NotFoundObjectResult(problemDetail);
+                    }
+                    else
+                    {
+                        context.HttpContext.Items["shirt"] = shirt;
+                    }
+                }                
             }
 
         }

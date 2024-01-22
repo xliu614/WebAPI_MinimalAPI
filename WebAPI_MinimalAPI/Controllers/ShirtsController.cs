@@ -27,9 +27,9 @@ namespace WebAPI_MinimalAPI.Controllers
         //[HttpGet("{id}/{color}")]
         //the following is to use querystring to input color, also it can be input from Header
         [HttpGet("{id}")]
-        [Shirt_ValidateShirtIdFilter]
-        public ActionResult<Shirt> GetShirtById(int id, [FromQuery(Name = nameof(color))] string? color) {
-            return Ok(ShirtRepository.GetShirtByid(id));
+        [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAttribute))]
+        public ActionResult<Shirt> GetShirtById(int id, [FromQuery(Name = nameof(color))] string? color) {            
+            return Ok(HttpContext.Items["shirt"]);
         }
         /// <summary>
         /// FromBody raw/FromForm with key value pair, here Shirt is used as model binding
@@ -45,9 +45,9 @@ namespace WebAPI_MinimalAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        [Shirt_ValidateShirtIdFilter]
+        [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAttribute))]
         [Shirt_ValidateUpdateShirtFilter]
-        [Shirt_UpdateExceptionFilter]
+        [TypeFilter(typeof(Shirt_UpdateExceptionFilterAttribute))]
         public IActionResult UpdateShirt(int id, [FromBody] Shirt shirt) {
             //using try catch block here, because there's possibility that when shirt's updated, it's already been removed
             ShirtRepository.UpdateShirt(shirt);            
@@ -55,11 +55,11 @@ namespace WebAPI_MinimalAPI.Controllers
             return NoContent();
         }
         [HttpDelete("{id}")]
-        [Shirt_ValidateShirtIdFilter]
+        [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAttribute))]
         public IActionResult DeleteShirt(int id) {
 
-            var shirt = ShirtRepository.GetShirtByid(id);
-            ShirtRepository.RemoveShirt(id);
+            var shirt = _shirtRepository.GetShirtByid(id);
+            //ShirtRepository.RemoveShirt(id);
             return Ok(shirt);
         }
     }

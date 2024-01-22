@@ -23,12 +23,15 @@ namespace WebAPI_MinimalAPI.Models.Repositories
             return _context.Shirts.ToList();
         }
 
-        public static bool ShirtExists(int id) {
-            return shirts.Any(s => s.ShirtId == id);
+        public bool ShirtExists(int id) {
+            var shirt = _context.Shirts.Find(id);
+            if (shirt == null)
+                return false;
+            return true;
         }
 
-        public static Shirt? GetShirtByid(int id) {
-            return shirts.FirstOrDefault(s => s.ShirtId == id);
+        public Shirt? GetShirtByid(int id) {
+            return _context.Shirts.FirstOrDefault(s => s.ShirtId == id);
         }
 
         public static Shirt? GetShirtByProps(string? brand, string? gender, string? color, int? size) {
@@ -62,7 +65,7 @@ namespace WebAPI_MinimalAPI.Models.Repositories
             shirtForUpdate.Gender = shirt.Gender;
         }
 
-        public static void RemoveShirt(int shirtId) {
+        public void RemoveShirt(int shirtId) {
             var shirt = GetShirtByid(shirtId);
             if (shirt != null) {
                 shirts.Remove(shirt);
