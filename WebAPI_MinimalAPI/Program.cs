@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using WebAPI_MinimalAPI.Data;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //Inject the services
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("ShirtStoreManagement:SQLServer")));
 builder.Services.AddControllers();
 
 // Add services to the container.
