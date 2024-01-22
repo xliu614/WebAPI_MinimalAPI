@@ -37,10 +37,10 @@ namespace WebAPI_MinimalAPI.Controllers
         /// <param name="shirt"></param>
         /// <returns></returns>
         [HttpPost]
-        [Shirt_ValidateCreateShirtPropsFilter]
+        [TypeFilter(typeof(Shirt_ValidateCreateShirtPropsFilterAttribute))]
         public IActionResult CreateShirt([FromBody] Shirt shirt) {
             
-            ShirtRepository.AddShirt(shirt);
+            _shirtRepository.AddShirt(shirt);
             return CreatedAtAction(nameof(GetShirtById),new { id = shirt.ShirtId }, shirt);
         }
 

@@ -34,26 +34,24 @@ namespace WebAPI_MinimalAPI.Models.Repositories
             return _context.Shirts.FirstOrDefault(s => s.ShirtId == id);
         }
 
-        public static Shirt? GetShirtByProps(string? brand, string? gender, string? color, int? size) {
-            return shirts.FirstOrDefault(x =>  !string.IsNullOrWhiteSpace(brand) &&
+        public Shirt? GetShirtByProps(string? brand, string? gender, string? color, int? size) {
+            return _context.Shirts.FirstOrDefault(x =>  !string.IsNullOrWhiteSpace(brand) &&
                                                !string.IsNullOrWhiteSpace(x.Brand) &&
-                                               x.Brand.Equals(brand, StringComparison.OrdinalIgnoreCase) &&
+                                               x.Brand.ToLower() == brand.ToLower() &&
                                                !string.IsNullOrWhiteSpace(gender) &&
                                                !string.IsNullOrWhiteSpace(x.Gender) &&
-                                               x.Gender.Equals(gender, StringComparison.OrdinalIgnoreCase) &&
+                                               x.Gender.ToLower() == gender.ToLower() &&
                                                !string.IsNullOrWhiteSpace(color) &&
                                                !string.IsNullOrWhiteSpace(x.Color) &&
-                                               x.Color.Equals(color, StringComparison.OrdinalIgnoreCase) &&
+                                               x.Color.ToLower() == color.ToLower() &&
                                                size.HasValue &&
                                                x.Size.HasValue &&
                                                x.Size.Value == size.Value);
         }
 
-        public static void AddShirt(Shirt shirt) {
-            int newId = shirts.Max(s => s.ShirtId) + 1;
-            shirt.ShirtId = newId;
-
-            shirts.Add(shirt);
+        public void AddShirt(Shirt shirt) {
+            _context.Shirts.Add(shirt);
+            _context.SaveChanges();
         }
 
         public static void UpdateShirt(Shirt shirt) {

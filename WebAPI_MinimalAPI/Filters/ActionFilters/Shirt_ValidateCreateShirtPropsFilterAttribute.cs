@@ -7,6 +7,11 @@ namespace WebAPI_MinimalAPI.Filters.ActionFilters
 {
     public class Shirt_ValidateCreateShirtPropsFilterAttribute : ActionFilterAttribute
     {
+        private readonly IShirtRepository _shirtRepository;
+        public Shirt_ValidateCreateShirtPropsFilterAttribute(IShirtRepository shirtRepository)
+        {
+            this._shirtRepository = shirtRepository;
+        }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             var shirt = context.ActionArguments["shirt"] as Shirt;
@@ -22,7 +27,7 @@ namespace WebAPI_MinimalAPI.Filters.ActionFilters
             }
             else
             {
-                var existingShirt = ShirtRepository.GetShirtByProps(shirt.Brand, shirt.Gender, shirt.Color, shirt.Size);
+                var existingShirt = _shirtRepository.GetShirtByProps(shirt.Brand, shirt.Gender, shirt.Color, shirt.Size);
                 if (existingShirt != null)
                 {
                     context.ModelState.AddModelError("ShirtProps", "Shirt already exists");
@@ -32,10 +37,7 @@ namespace WebAPI_MinimalAPI.Filters.ActionFilters
                     };
                     context.Result = new BadRequestObjectResult(problemDetail);
                 }
-
             }
-
-
         }
     }
 }
