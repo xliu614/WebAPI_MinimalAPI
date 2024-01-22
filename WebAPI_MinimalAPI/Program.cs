@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using WebAPI_MinimalAPI.Data;
 using Microsoft.EntityFrameworkCore;
+using WebAPI_MinimalAPI.Models.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //Inject the services
+builder.Services.AddTransient<IShirtRepository, ShirtRepository>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("ShirtStoreManagement:SQLServer")));
 builder.Services.AddControllers();

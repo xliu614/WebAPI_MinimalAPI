@@ -1,9 +1,15 @@
 ﻿using WebAPI_MinimalAPI.Controllers;
+using WebAPI_MinimalAPI.Data;
 
 namespace WebAPI_MinimalAPI.Models.Repositories
 {
-    public class ShirtRepository
+    public class ShirtRepository:IShirtRepository
     {
+        private readonly ApplicationDbContext _context;
+        public ShirtRepository(ApplicationDbContext dbContext)
+        {
+            this._context = dbContext;   
+        }
         private static readonly List<Shirt> shirts = new List<Shirt>()
         {
            new Shirt {ShirtId=1, Brand = "V Brand", Color ="Yellow", Gender="women", Price = 30, Size=6 },
@@ -13,8 +19,8 @@ namespace WebAPI_MinimalAPI.Models.Repositories
            new Shirt {ShirtId=5, Brand = "Y Brand", Color ="White", Gender="women", Price = 10, Size = 6 }
         };
 
-        public static List<Shirt> GetShirts() {
-            return shirts;
+        public List<Shirt> GetShirts() {
+            return _context.Shirts.ToList();
         }
 
         public static bool ShirtExists(int id) {

@@ -11,10 +11,17 @@ namespace WebAPI_MinimalAPI.Controllers
     [Route("api/[controller]")]
     public class ShirtsController : ControllerBase
     {
+        private readonly IShirtRepository _shirtRepository;
+
+        public ShirtsController(IShirtRepository shirtRepository)
+        {
+            this._shirtRepository = shirtRepository;
+
+        }
 
         [HttpGet]
         public IActionResult GetShirts() {
-            return Ok(ShirtRepository.GetShirts());
+            return Ok(_shirtRepository.GetShirts());
         }
         //mapping from rount to input props
         //[HttpGet("{id}/{color}")]
