@@ -58,10 +58,9 @@ namespace WebAPI_MinimalAPI.Controllers
         [HttpDelete("{id}")]
         [TypeFilter(typeof(Shirt_ValidateShirtIdFilterAttribute))]
         public IActionResult DeleteShirt(int id) {
-
-            var shirt = _shirtRepository.GetShirtByid(id);
-            //ShirtRepository.RemoveShirt(id);
-            return Ok(shirt);
+            var shirtForDelete = HttpContext.Items["shirt"] as Shirt;
+            _shirtRepository.RemoveShirt(shirtForDelete);
+            return Ok(shirtForDelete);
         }
     }
 }

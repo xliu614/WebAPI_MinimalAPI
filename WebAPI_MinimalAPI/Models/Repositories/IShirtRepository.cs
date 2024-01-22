@@ -8,5 +8,6 @@
         public Shirt? GetShirtByProps(string? brand, string? gender, string? color, int? size);
         public void AddShirt(Shirt shirt);
         public void UpdateShirt(Shirt shirtForUpdate, Shirt shirt);
+        public void RemoveShirt(Shirt shirt);
     }
 }

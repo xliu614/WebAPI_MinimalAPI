@@ -63,11 +63,9 @@ namespace WebAPI_MinimalAPI.Models.Repositories
                 _context.SaveChanges();          
         }
 
-        public void RemoveShirt(int shirtId) {
-            var shirt = GetShirtByid(shirtId);
-            if (shirt != null) {
-                shirts.Remove(shirt);
-            }
+        public void RemoveShirt(Shirt shirt) {
+            _context.Shirts.Remove(shirt);
+            _context.SaveChanges();
         }
     }
 }
