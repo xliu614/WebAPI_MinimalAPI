@@ -54,13 +54,13 @@ namespace WebAPI_MinimalAPI.Models.Repositories
             _context.SaveChanges();
         }
 
-        public static void UpdateShirt(Shirt shirt) {
-            var shirtForUpdate = shirts.First(s => s.ShirtId == shirt.ShirtId);
-            shirtForUpdate.Brand = shirt.Brand;
-            shirtForUpdate.Price = shirt.Price;
-            shirtForUpdate.Size = shirt.Size;
-            shirtForUpdate.Color = shirt.Color;
-            shirtForUpdate.Gender = shirt.Gender;
+        public void UpdateShirt(Shirt shirtForUpdate, Shirt shirt) {
+                shirtForUpdate.Brand = shirt.Brand;
+                shirtForUpdate.Price = shirt.Price;
+                shirtForUpdate.Size = shirt.Size;
+                shirtForUpdate.Color = shirt.Color;
+                shirtForUpdate.Gender = shirt.Gender;
+                _context.SaveChanges();          
         }
 
         public void RemoveShirt(int shirtId) {

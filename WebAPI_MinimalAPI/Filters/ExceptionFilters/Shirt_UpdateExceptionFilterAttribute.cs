@@ -19,7 +19,9 @@ namespace WebAPI_MinimalAPI.Filters.ExceptionFilters
             var strShirtId = context.RouteData.Values["id"] as string;
             if (int.TryParse(strShirtId, out int shirtId)) 
             {
-                if (!_shirtRepository.ShirtExists(shirtId))
+                
+                var shirt = _shirtRepository.GetShirtByid(shirtId);
+                if (shirt == null)
                 {
                     context.ModelState.AddModelError("Shirt", "The shirt has already been removed");
                     var problemDetail = new ValidationProblemDetails(context.ModelState)
@@ -27,8 +29,8 @@ namespace WebAPI_MinimalAPI.Filters.ExceptionFilters
                         Status = StatusCodes.Status404NotFound,
                     };
                     context.Result = new NotFoundObjectResult(problemDetail);
-
                 }
+                
             }
         }
     }

@@ -50,7 +50,8 @@ namespace WebAPI_MinimalAPI.Controllers
         [TypeFilter(typeof(Shirt_UpdateExceptionFilterAttribute))]
         public IActionResult UpdateShirt(int id, [FromBody] Shirt shirt) {
             //using try catch block here, because there's possibility that when shirt's updated, it's already been removed
-            ShirtRepository.UpdateShirt(shirt);            
+            var shirtForUpdate = HttpContext.Items["shirt"] as Shirt;
+            _shirtRepository.UpdateShirt(shirtForUpdate,shirt);            
 
             return NoContent();
         }
