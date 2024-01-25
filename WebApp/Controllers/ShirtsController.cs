@@ -30,31 +30,51 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await _webApiExecuter.InvokePost("shirts", shirt);
-                if (response != null)
+                try
                 {
-                    return RedirectToAction(nameof(Index));
+                    var response = await _webApiExecuter.InvokePost("shirts", shirt);
+                    if (response != null)
+                    {
+                        return RedirectToAction(nameof(Index));
+                    }
                 }
+                catch (WebApiException ex) {
+                    HandleWebApiException(ex);
+				}
             }
             return View(shirt);
         }
 
         public async Task<IActionResult> UpdateShirt(int shirtId)
         {
-            var shirt = await _webApiExecuter.InvokeGet<Shirt>($"shirts/{shirtId}");
-            if (shirt != null)
+            try
             {
-                return View(shirt);
+                var shirt = await _webApiExecuter.InvokeGet<Shirt>($"shirts/{shirtId}");
+                if (shirt != null)
+                {
+                    return View(shirt);
+                }
+            }
+            catch (WebApiException ex) {
+                HandleWebApiException(ex);
+                return View();
             }
             return NotFound();
         }
         [HttpPost]
         public async Task<IActionResult> UpdateShirt(Shirt shirt)
         {
+           
             if (ModelState.IsValid)
             {
-                await _webApiExecuter.InvokePut($"shirts/{shirt.ShirtId}", shirt);
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    await _webApiExecuter.InvokePut($"shirts/{shirt.ShirtId}", shirt);
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (WebApiException ex) {
+                    HandleWebApiException(ex);
+                }
             }
             return View(shirt);
         }
@@ -67,5 +87,15 @@ namespace WebApp.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        private void HandleWebApiException(WebApiException ex) {
+			if (ex.ErrorResponse != null && ex.ErrorResponse.Errors != null && ex.ErrorResponse.Errors.Count > 0)
+			{
+				foreach (var error in ex.ErrorResponse.Errors)
+				{
+					ModelState.AddModelError(error.Key, string.Join("; ", error.Value));
+				}
+			}
+		}
     }
 }
