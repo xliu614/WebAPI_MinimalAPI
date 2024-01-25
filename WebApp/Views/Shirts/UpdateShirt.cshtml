@@ -1,15 +1,16 @@
 ﻿@model Shirt
 
 <h3>Shirt</h3>
-<br/>
-<form method="post" asp-action="CreateShirt">
+<br />
+<form method="post" asp-action="UpdateShirt">
+	<input hidden asp-for="ShirtId"/>
 	<div class="text-danger" asp-validation-summary="ModelOnly"></div>
 	<div class="mb-3 row">
 		<div class="col-2">
 			<label asp-for="Brand" class="col-form-label"></label>
 		</div>
 		<div class="col-6">
-			<input type="text" asp-for= "Brand" class="form-control"/>
+			<input type="text" asp-for="Brand" class="form-control" />
 		</div>
 		<div class="col">
 			<span class="text-danger" asp-validation-for="Brand"></span>
@@ -20,7 +21,7 @@
 			<label asp-for="Color" class="col-form-label"></label>
 		</div>
 		<div class="col-6">
-			<input type="text" asp-for="Color" class="form-control"/>
+			<input type="text" asp-for="Color" class="form-control" />
 		</div>
 		<div class="col">
 			<span class="text-danger" asp-validation-for="Color"></span>
@@ -42,7 +43,7 @@
 			<label asp-for="Size" class="col-form-label"></label>
 		</div>
 		<div class="col-6">
-			<input type="number" asp-for="Size" class="form-control" min="1"/>
+			<input type="number" asp-for="Size" class="form-control" min="1" />
 		</div>
 		<div class="col">
 			<span class="text-danger" asp-validation-for="Size"></span>
@@ -61,10 +62,9 @@
 	</div>
 	<div class="mb-3 row">
 		<div class="col-2">
-			<input type="submit" class="btn btn-primary" value="Submit"/>
+			<input type="submit" class="btn btn-primary" value="Save"/>
 		</div>
 		<div class="col-6">
-			
 		</div>
 	</div>
 

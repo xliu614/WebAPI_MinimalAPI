@@ -13,8 +13,10 @@ namespace WebApp.Models
         [Range(1, 20)]
         [Shirt_EnsureCorrectSize]
         public int? Size { get; set; }
+
+        private string? gender;
         [Required]
-        public string? Gender { get; set; }
+        public string? Gender { get => gender; set => gender = value?.ToLower(); }
         public double? Price { get; set; }
     }
 }
