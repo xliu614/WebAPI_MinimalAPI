@@ -6,12 +6,12 @@ namespace WebApp.Controllers
 {
     public class ShirtsController : Controller
     {
-		private readonly IWebApiExecuter _webApiExecuter;
+        private readonly IWebApiExecuter _webApiExecuter;
 
-		public ShirtsController(IWebApiExecuter webApiExecuter)
+        public ShirtsController(IWebApiExecuter webApiExecuter)
         {
-			this._webApiExecuter = webApiExecuter;
-		}
+            this._webApiExecuter = webApiExecuter;
+        }
         public async Task<IActionResult> Index()
         {
             //List<Shirt> shirts = new List<Shirt>() {
@@ -21,12 +21,15 @@ namespace WebApp.Controllers
             return View(await _webApiExecuter.InvokeGet<List<Shirt>>("shirts"));
         }
 
-        public IActionResult CreateShirt() {
+        public IActionResult CreateShirt()
+        {
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> CreateShirt(Shirt shirt) {
-            if (ModelState.IsValid) {
+        public async Task<IActionResult> CreateShirt(Shirt shirt)
+        {
+            if (ModelState.IsValid)
+            {
                 var response = await _webApiExecuter.InvokePost("shirts", shirt);
                 if (response != null)
                 {
@@ -36,22 +39,33 @@ namespace WebApp.Controllers
             return View(shirt);
         }
 
-        public async Task<IActionResult> UpdateShirt(int shirtId) {
+        public async Task<IActionResult> UpdateShirt(int shirtId)
+        {
             var shirt = await _webApiExecuter.InvokeGet<Shirt>($"shirts/{shirtId}");
-            if (shirt != null) {
+            if (shirt != null)
+            {
                 return View(shirt);
             }
             return NotFound();
         }
         [HttpPost]
-		public async Task<IActionResult> UpdateShirt(Shirt shirt)
-		{
+        public async Task<IActionResult> UpdateShirt(Shirt shirt)
+        {
             if (ModelState.IsValid)
             {
-                await _webApiExecuter.InvokePut<Shirt>($"shirts/{shirt.ShirtId}", shirt);
+                await _webApiExecuter.InvokePut($"shirts/{shirt.ShirtId}", shirt);
                 return RedirectToAction(nameof(Index));
             }
             return View(shirt);
-		}
-	}
+        }
+
+        public async Task<IActionResult> DeleteShirt(int shirtId)
+        {
+            if (ModelState.IsValid)
+            {
+                await _webApiExecuter.InvokeDelete($"shirts/{shirtId}");
+            }
+            return RedirectToAction(nameof(Index));
+        }
+    }
 }
