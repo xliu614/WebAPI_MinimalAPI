@@ -83,7 +83,14 @@ namespace WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _webApiExecuter.InvokeDelete($"shirts/{shirtId}");
+                try
+                {
+                    await _webApiExecuter.InvokeDelete($"shirts/{shirtId}");
+                }
+                catch (WebApiException ex) { 
+                    HandleWebApiException(ex);
+                    return View(nameof(Index), await _webApiExecuter.InvokeGet<List<Shirt>>("shirts"));
+                }
             }
             return RedirectToAction(nameof(Index));
         }
